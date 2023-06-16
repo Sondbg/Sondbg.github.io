@@ -35,7 +35,14 @@ So long as men can breathe, or eyes can see,<br>
 So long lives this, and this gives life to thee.`
 }
 
-document.querySelector(".result").innerHTML= `You won ${result[value]}`;
+let addString=''
+if(result[value]==undefined){
+
+addString="well nothing. Try again you silly girl!"
+}else{
+    addString=result[value]
+}
+document.querySelector(".result").innerHTML= `You won ${addString}`;
 console.log(result[value])
     coupon.value=''
 }
