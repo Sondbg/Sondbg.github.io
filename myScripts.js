@@ -14,6 +14,9 @@ var result={
     "quadruplets":"...I said NO, first we meet...then kids.",
     "montauk":"a trip across Bulgaria to inform the people about our beer-savior 'Montauk'!",
     "love":"... just love, and a lots of it. I love your silly sarcasm.",
+    "cats":"you'll be treated as a home grown, well fed, groomed, cat.",
+    "jazz":"...really? More jazz! Lots more of it!",
+    "beach":"a whole day at the beach, where you get your own Dominos pizza choice!",
     "sonet": `<b>the classic Shakespeare 18th Sonet !</b><br>
     <br>
 Shall I compare thee to a summer's day?<br>
