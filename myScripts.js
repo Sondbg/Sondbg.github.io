@@ -38,11 +38,11 @@ So long lives this, and this gives life to thee.`
 let addString=''
 if(result[value]==undefined){
 
-addString="well nothing. Try again you jazz loving Fanatic!"
+addString="well nothing. Try again you jazz loving Fanatic!";
 }else{
-    addString=result[value]
+    addString=result[value];
 }
 document.querySelector(".result").innerHTML= `You won ${addString}`;
-console.log(result[value])
+
     coupon.value=''
 }
