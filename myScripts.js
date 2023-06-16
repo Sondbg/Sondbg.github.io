@@ -38,7 +38,7 @@ So long lives this, and this gives life to thee.`
 let addString=''
 if(result[value]==undefined){
 
-addString="well nothing. Try again you silly girl!"
+addString="well nothing. Try again you jazz loving Fanatic!"
 }else{
     addString=result[value]
 }
