@@ -186,7 +186,11 @@
             resetFloatingText();
             hideButtons();
             if (!isMusicPlaying) {
+              if(messageArray=="messagesTedi"){
                 playMusic('Tedi.mp3');
+            }else{
+                playMusic('Poli.mp3');
+            }
             }
             showMessage('Ето за какво ми беше музиката.....', messageArray);
             showBackButton();
