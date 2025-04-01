@@ -34,6 +34,11 @@ h1{
   text-align:center;
   padding:20px
 }
+iframe{
+	margin: auto;
+	display: flex;
+	justify-content: center;
+}
 
 .container {
   width: var(--width);
@@ -124,7 +129,7 @@ h1{
 .arrow-button {
   width: 60px;
   height: 60px;
-  background-color: #ccc;
+  background-color: #b52929;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -134,7 +139,7 @@ h1{
 }
 
 .arrow-button:hover {
-  background-color: #2196F3;
+  background-color: #dbf321;
 }
 
 .arrow {
