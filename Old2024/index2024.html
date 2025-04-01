@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #add8e6;
+            /* Soft blue background */
+            background-image: url('heart.png');
+            /* Pink hearts pattern */
+            background-repeat: repeat;
+            /* Repeat the heart image */
+            background-size: 50px;
+            /* Set the size of the heart image */
+            position: relative;
+        }
+
+        #button1 {
+            box-shadow: inset 0px 1px 0px 0px #bee2f9;
+            background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+            background-color: #63b8ee;
+            border-radius: 6px;
+            border: 1px solid #3866a3;
+            display: inline-block;
+            cursor: pointer;
+            color: #14396a;
+            font-family: Arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 6px 24px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #7cacde;
+        }
+
+        #button1:hover {
+            background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+            background-color: #468ccf;
+        }
+
+        #button2 {
+            box-shadow: inset 0px 1px 0px 0px #fff6af;
+            background: linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
+            background-color: #ffec64;
+            border-radius: 6px;
+            border: 1px solid #ffaa22;
+            display: inline-block;
+            cursor: pointer;
+            color: #333333;
+            font-family: Arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 6px 24px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #ffee66;
+        }
+
+        #button2:hover {
+            background: linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+            background-color: #ffab23;
+        }
+
+        #button-container {
+            display: block;
+            flex-direction: column;
+            /* Changed to column layout */
+            align-items: center;
+            /* Center align items */
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #back-button {
+            background-color: #f1f1f1;
+            color: black;
+            display: none;
+            font-size: 26px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: inset 0px 1px 0px 0px #ffffff;
+            background: linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid #dcdcdc;
+            cursor: pointer;
+            color: #666666;
+            font-family: Arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 6px 24px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #ffffff;
+            /* Added top margin */
+        }
+
+        #back-button:hover {
+            background: linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+            background-color: #e9e9e9;
+        }
+
+        #message-container {
+            display: none;
+            position: absolute;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        #message {
+            color: rgb(0, 0, 0);
+            font-size: xx-large;
+            font-family: cursive;
+            font-style: italic;
+            text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+            /* text-shadow: 4px 4px gray; */
+        }
+
+        #volume-container {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #volume-icon {
+            margin-right: 10px;
+            color: #333;
+            /* Adjust the color as needed */
+            cursor: pointer;
+        }
+
+        #volume-slider {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="button-container">
+        <button id="button1" onclick="startMusic('messagesTedi')">Теодора</button>
+        <button id="button2" onclick="startMusic('messagesPoli')">Полина</button>
+
+    </div>
+
+    <div id="message-container">
+        <p id="message"></p>
+    </div>
+    <div id="back-button" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i> Back
+    </div>
+    <div id="volume-container">
+        <i id="volume-icon" class="fas fa-volume-up" onclick="toggleMute()"></i>
+        <input id="volume-slider" type="range" min="0" max="1" step="0.1" value="1" oninput="setVolume(this.value)">
+    </div>
+
+    <audio id="backgroundMusic" loop>
+        <!-- This element is hidden and will autoplay in the background -->
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <script>
+        var isMusicPlaying = false;
+        var messages;
+        var messagesTedi = ['In the realm of art, where colors dance,', "A muse named Teodora, a heart's sweet chance.", 'With strokes of passion, she paints the day,', "In hues of love, where emotions play.", 'In the canvas of life, her spirit unfurls,', 'A masterpiece painted with Boy Love swirls.', "Manhwa tales whispering, a romantic song,", 'Teodora\'s heart, where passions belong.', 'Her eyes reflect the stars, a celestial gleam,', 'As dreams intertwine with the artist\'s dream.', 'On Valentine\'s Day, a message I send,', 'For Teodora, my love, an eternal blend.', 'May your palette be filled with shades so bright,', 'A love story crafted, in the soft moonlight.', 'For in your art and heart, a magic spell,', 'Teodora, my muse, forever, I dwell.'];
+        var messagesPoli = ["In a world where dreams and colors entwine,", 'There\'s a girl named Polina, an artist divine.', 'With brushes in hand, she paints the sky,', 'A canvas of dreams, where fantasies fly.', 'In the quiet corners of her poetic mind,', 'A library of thoughts, a treasure to find.', 'Pages unfurl like petals in bloom,', 'In the world of books, Polina finds room.', 'With every stroke, her imagination takes flight,', 'A symphony of colors, a wondrous sight.', 'In the tapestry of art, where stories are spun,', 'Polina, the weaver, her journey begun.', 'Her dream, a library vast and grand,', 'Where shelves stretch out like a love so grand.', 'Books whispering tales of worlds untold,', 'In the embrace of knowledge, Polina\'s heart unfolds.', 'On this day of love, a ode I send,', 'To Polina, my muse, my dearest friend.', 'May your art continue to dance and sing,', 'In the library of dreams, where your heart takes wing.'];
+        var currentMessageIndex = -1;
+        var floatingSpeed = 1; // Initial speed
+
+        function startMusic(messageArray) {
+            resetFloatingText();
+            hideButtons();
+            if (!isMusicPlaying) {
+              if(messageArray=="messagesTedi"){
+                playMusic('Tedi.mp3');
+            }else{
+                playMusic('Poli.mp3');
+            }
+            }
+            showMessage('Ето за какво ми беше музиката.....', messageArray);
+            showBackButton();
+            setInterval(updateMessage, 7000);
+        }
+
+        function resetFloatingText() {
+            floatingSpeed = 1;
+        }
+
+        function hideButtons() {
+            var buttonContainer = document.getElementById('button-container');
+            buttonContainer.style.display = 'none';
+        }
+
+        function playMusic(musicFile) {
+            var backgroundMusic = document.getElementById('backgroundMusic');
+
+            if (backgroundMusic.src.includes(musicFile)) {
+                return;
+            }
+
+            backgroundMusic.pause();
+            var sourceElement = document.querySelector('#backgroundMusic source');
+            sourceElement.src = musicFile;
+
+            backgroundMusic.load();
+            backgroundMusic.play();
+            isMusicPlaying = true;
+        }
+
+        function setVolume(volume) {
+            var backgroundMusic = document.getElementById('backgroundMusic');
+            backgroundMusic.volume = volume;
+
+            var volumeIcon = document.getElementById('volume-icon');
+            volumeIcon.className = volume == 0 ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+        }
+
+        function toggleMute() {
+            var backgroundMusic = document.getElementById('backgroundMusic');
+            var volumeIcon = document.getElementById('volume-icon');
+
+            if (backgroundMusic.muted) {
+                backgroundMusic.muted = false;
+                volumeIcon.className = 'fas fa-volume-up';
+            } else {
+                backgroundMusic.muted = true;
+                volumeIcon.className = 'fas fa-volume-mute';
+            }
+        }
+
+        function showMessage(message, messageArray) {
+            var messageContainer = document.getElementById('message-container');
+            var messageElement = document.getElementById('message');
+
+            if (messageArray === 'messagesTedi') {
+                messages = messageArray;
+            } else if (messageArray === 'messagesPoli') {
+                messages = messageArray;
+            }
+
+            messageElement.textContent = message;
+            messageContainer.style.display = 'block';
+            floatMessage();
+        }
+
+        function updateMessage() {
+            if (messages === 'messagesTedi') {
+                currentMessageIndex = (currentMessageIndex + 1) % messagesTedi.length;
+                var messageElement = document.getElementById('message');
+                messageElement.textContent = messagesTedi[currentMessageIndex];
+            } else if (messages === 'messagesPoli') {
+                currentMessageIndex = (currentMessageIndex + 1) % messagesPoli.length;
+                var messageElement = document.getElementById('message');
+                messageElement.textContent = messagesPoli[currentMessageIndex];
+            }
+            floatingSpeed = 1; // Reset speed on each message switch
+        }
+
+        function floatMessage() {
+            var messageContainer = document.getElementById('message-container');
+            var directionX = 1;
+            var directionY = 1;
+
+            function move() {
+                var rect = messageContainer.getBoundingClientRect();
+                var newX = rect.left + floatingSpeed * directionX;
+                var newY = rect.top + floatingSpeed * directionY;
+
+                if (newX >= 0 && newX + rect.width <= window.innerWidth) {
+                    messageContainer.style.left = newX + 'px';
+                } else {
+                    directionX *= -1;
+                }
+
+                if (newY >= 0 && newY + rect.height <= window.innerHeight) {
+                    messageContainer.style.top = newY + 'px';
+                } else {
+                    directionY *= -1;
+                }
+
+                requestAnimationFrame(move);
+            }
+
+            move();
+        }
+
+        function showBackButton() {
+            var backButton = document.getElementById('back-button');
+            backButton.style.display = 'block';
+        }
+
+        function hideBackButton() {
+            var backButton = document.getElementById('back-button');
+            backButton.style.display = 'none';
+        }
+
+        function goBack() {
+            location.reload();
+            var backgroundMusic = document.getElementById('backgroundMusic');
+            backgroundMusic.pause();
+            isMusicPlaying = false;
+            currentMessageIndex = -1;
+            resetFloatingText();
+            hideMessage();
+            showButtons();
+            hideBackButton();
+        }
+
+        function showButtons() {
+            var buttonContainer = document.getElementById('button-container');
+            buttonContainer.style.display = 'flex';
+        }
+
+        function hideMessage() {
+            var messageContainer = document.getElementById('message-container');
+            messageContainer.style.display = 'none';
+        }
+    </script>
+
+
+
+</body>
+
+</html>
